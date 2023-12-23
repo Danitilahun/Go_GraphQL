@@ -9,3 +9,8 @@ type JobListing {
   company: String!
   url: String!
 }
+
+type Query {
+  jobs: [JobListing!]!
+  job(id: ID!): JobListing!
+}
