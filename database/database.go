@@ -6,9 +6,9 @@ import (
 	"time"
 
 	"github.com/Danitilahun/GraphQL_GO_MongoDB.git/graph/model"
+	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
-	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo/options"
 	"go.mongodb.org/mongo-driver/mongo/readpref"
 )
@@ -37,8 +37,6 @@ func Connect() *DB {
 	}
 }
 
-
-
 func (db *DB) GetJob(id string) *model.JobListing {
 	jobCollec := db.client.Database("graphql-job-board").Collection("jobs")
 	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
@@ -52,4 +50,21 @@ func (db *DB) GetJob(id string) *model.JobListing {
 		log.Fatal(err)
 	}
 	return &jobListing
+}
+
+func (db *DB) GetJobs() []*model.JobListing {
+	jobCollec := db.client.Database("graphql-job-board").Collection("jobs")
+	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
+	defer cancel()
+	var jobListings []*model.JobListing
+	cursor, err := jobCollec.Find(ctx, bson.D{})
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	if err = cursor.All(context.TODO(), &jobListings); err != nil {
+		panic(err)
+	}
+
+	return jobListings
 }
