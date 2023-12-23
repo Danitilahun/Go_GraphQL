@@ -6,8 +6,6 @@ package graph
 
 import (
 	"context"
-	"fmt"
-
 	"github.com/Danitilahun/GraphQL_GO_MongoDB.git/database"
 	"github.com/Danitilahun/GraphQL_GO_MongoDB.git/graph/model"
 )

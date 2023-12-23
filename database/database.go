@@ -114,3 +114,17 @@ func (db *DB) UpdateJobListing(jobId string, jobInfo model.UpdateJobListingInput
 
 	return &jobListing
 }
+
+func (db *DB) DeleteJobListing(jobId string) *model.DeleteJobResponse {
+	jobCollec := db.client.Database("graphql-job-board").Collection("jobs")
+	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
+	defer cancel()
+
+	_id, _ := primitive.ObjectIDFromHex(jobId)
+	filter := bson.M{"_id": _id}
+	_, err := jobCollec.DeleteOne(ctx, filter)
+	if err != nil {
+		log.Fatal(err)
+	}
+	return &model.DeleteJobResponse{DeletedJobID: jobId}
+}
