@@ -2,15 +2,14 @@ package database
 
 import (
 	"context"
-	"log"
-	"time"
-
 	"github.com/Danitilahun/GraphQL_GO_MongoDB.git/graph/model"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 	"go.mongodb.org/mongo-driver/mongo/readpref"
+	"log"
+	"time"
 )
 
 var connectionString string = ""
@@ -67,4 +66,19 @@ func (db *DB) GetJobs() []*model.JobListing {
 	}
 
 	return jobListings
+}
+
+func (db *DB) CreateJobListing(jobInfo model.CreateJobListingInput) *model.JobListing {
+	jobCollec := db.client.Database("graphql-job-board").Collection("jobs")
+	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
+	defer cancel()
+	inserg, err := jobCollec.InsertOne(ctx, bson.M{"title": jobInfo.Title, "description": jobInfo.Description, "url": jobInfo.URL, "company": jobInfo.Company})
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	insertedID := inserg.InsertedID.(primitive.ObjectID).Hex()
+	returnJobListing := model.JobListing{ID: insertedID, Title: jobInfo.Title, Company: jobInfo.Company, Description: jobInfo.Description, URL: jobInfo.URL}
+	return &returnJobListing
 }
