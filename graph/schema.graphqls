@@ -1,3 +1,11 @@
 # GraphQL schema example
 #
 # https://gqlgen.com/getting-started/
+
+type JobListing {
+  _id: ID!
+  title: String!
+  description: String!
+  company: String!
+  url: String!
+}
