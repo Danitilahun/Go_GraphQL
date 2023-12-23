@@ -20,3 +20,20 @@ type Mutation {
   updateJobListing(id: ID!, input: UpdateJobListingInput!): JobListing!
   deleteJobListing(id: ID!): DeleteJobResponse!
 }
+
+input CreateJobListingInput {
+  title: String!
+  description: String!
+  company: String!
+  url: String!
+}
+
+input UpdateJobListingInput {
+  title: String
+  description: String
+  url: String
+}
+
+type DeleteJobResponse {
+  deletedJobId: String!
+}
