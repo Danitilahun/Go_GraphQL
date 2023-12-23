@@ -12,7 +12,7 @@ import (
 	"time"
 )
 
-var connectionString string = ""
+var connectionString string = "mongodb+srv://graphql-job-board:oEkEhpjXolL0YPh3@cluster0.aemyxz3.mongodb.net/graphql-job-board?retryWrites=true&w=majority"
 
 type DB struct {
 	client *mongo.Client
