@@ -1,13 +1,12 @@
 package main
 
 import (
-	"log"
-	"net/http"
-	"os"
-
 	"github.com/99designs/gqlgen/graphql/handler"
 	"github.com/99designs/gqlgen/graphql/playground"
 	"github.com/Danitilahun/GraphQL_GO_MongoDB.git/graph"
+	"log"
+	"net/http"
+	"os"
 )
 
 const defaultPort = "8080"
